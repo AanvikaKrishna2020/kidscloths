@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+       {% if category %}
+          {{ category.description|truncatewords:155 }}
+       {% else %}
+           Welcome to THE KIDS Shop  where you can buy the bests for your kids...
+       {% endif %}
+{% endblock %}
+
+{% block title %}
+       {% if category %}
+           {{ category.name }} -THE KIDS
+       {% else %}
+            See our New Collections - THE KIDS
+       {% endif %}
+{% endblock %}
+
+
+{% block content %}
+     {% if category %}
+       <div>
+           <div class="row my_row_class">
+               <div class="mx-auto">
+
+
+               <p><a href="{% url 'kidsapp:allProdCat' %}"> Our Product Collections</a></p>
+               </div>
+           </div>
+       </div>
+     {% endif %}
+<div class="mx_auto">
+    {% if category %}
+    <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}">
+</div>
+<br>
+<div>
+
+
+
+    <h1 class="text-center my_title">{{category.name}}</h1>
+    <p class="text-justify">{{category.description}}</p>
+</div>
+     {% else %}
+<div>
+    <img class="my_image my_image_padding" src="{% static 'img/baner.jpg' %}" alt="our products">
+
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title">our products collections </h1>
+    <p  class="text-justify">buy bests for your kids ...MyKidz Designer Dresses online shop can be your one-stop destination for Indian fashion designer kidswear. Pick us to Buy Kidswear Designer Dresses ...
+        Explore our huge collection of kids' wear including dresses, skirts, co-ord sets, and many more varieties. We have options for every price range and each design..Find the perfect party modern kids dress collection for style and comfort today.
+ </p>
+</div>
+      {% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4  col-lg-4">
+            <div class="card text-center"style="min-width;18rem;">
+                <a href="{{product.get_url}}"><img class="card-img-top mmy_image" src="{{product.image.url}}" alt="{{product.name}}"></a>
+                <div class="card-body">
+                    <h4>{{product.name}}</h4>
+                    <p>{{product.price}}</p>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+                <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif%}">{{pg}}</a>
+            {% endfor %}
+
+        </div>
+                {% endif %}
+
+    </div>
+    <br>
+</div>
+{% endblock %}
